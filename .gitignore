@@ -1,0 +1,34 @@
+# Thư mục node_modules (cần thiết)
+node_modules/
+
+# Thư mục build (kết quả biên dịch TypeScript)
+dist/
+
+# File cấu hình môi trường (API key, DB uri,...)
+.env
+
+# File log
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mac OS / Windows
+.DS_Store
+Thumbs.db
+
+# IDE/editor config
+.vscode/
+.idea/
+*.sw?
+
+# Ngrok file (nếu có dùng)
+ngrok-debug.log
+
+# TS build cache (nếu có bật incremental)
+*.tsbuildinfo
+
+# Excel/data tạm
+data/*.xlsx
+data/*.csv
