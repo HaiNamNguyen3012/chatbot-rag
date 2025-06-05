@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
+    "types": ["node"],
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "src/data"],

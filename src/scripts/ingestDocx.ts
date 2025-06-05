@@ -1,15 +1,15 @@
 import fs from "fs";
 import path from "path";
-import mammoth from "mammoth";
 import dotenv from "dotenv";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/community/vectorstores/pinecone";
 import { pineconeIndex } from "../services/pinecone";
 import { chunkText } from "../utils/chunkText";
 import { getTopicFromChunk } from "../utils/getTopic";
+import mammoth from "mammoth";
 
 dotenv.config();
-
+// @ts-ignore
 async function loadDocxText(filePath: string): Promise<string> {
   const result = await mammoth.extractRawText({ path: filePath });
   return result.value || "";
