@@ -4,7 +4,7 @@ import { PineconeStore } from '@langchain/community/vectorstores/pinecone';
 import { pineconeIndex } from './pinecone';
 import { chunkText } from '../utils/chunkText';
 import { OpenAIEmbeddings } from '@langchain/openai';
-import { Document } from 'langchain/document';
+import { Document } from "@langchain/core/documents";
 import dotenv from 'dotenv';
 
 dotenv.config();
