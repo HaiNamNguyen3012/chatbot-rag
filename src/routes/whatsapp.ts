@@ -1,26 +1,35 @@
-import express, { Request, Response } from "express";
+import { Router, Request, Response } from "express";
 import { askQuestionWithRAG } from "../services/rag";
+import { detectNamespace } from "../utils/detectNamespace";
+import MessagingResponse from "twilio/lib/twiml/MessagingResponse";
 
-const router = express.Router();
+const router = Router();
 
-router.post("/webhook", async (req: Request, res: Response) => {
-  const message = req.body.Body;
-  const sender = req.body.From;
+router.post("/", async (req: Request, res: Response) => {
+  try {
+    const incomingMsg = req.body.Body?.trim();
+    const from = req.body.From;
 
-  console.log(`📩 Tin nhắn từ ${sender}: ${message}`);
+    console.log("📩 Tin nhắn từ:", from);
+    console.log("📨 Nội dung:", incomingMsg);
 
-  // Gọi RAG để lấy câu trả lời
-  const answer = await askQuestionWithRAG(message, "faq");
+    let reply = "Xin lỗi, tôi chưa có đủ thông tin để trả lời câu hỏi này.";
 
-  // Gửi lại trả lời dưới dạng TwiML
-  const responseMessage = `
-    <Response>
-      <Message>${answer}</Message>
-    </Response>
-  `;
+    if (incomingMsg) {
+      const namespace = await detectNamespace(incomingMsg);
+      console.log("📁 Namespace được chọn:", namespace);
+      reply = await askQuestionWithRAG(incomingMsg, namespace);
+    }
 
-  res.set("Content-Type", "text/xml");
-  res.send(responseMessage.trim());
+    const twiml = new MessagingResponse();
+    twiml.message(reply);
+    res.type("text/xml").send(twiml.toString());
+  } catch (error) {
+    console.error("❌ Lỗi xử lý webhook WhatsApp:", error);
+    const twiml = new MessagingResponse();
+    twiml.message("Đã xảy ra lỗi khi xử lý câu hỏi.");
+    res.type("text/xml").send(twiml.toString());
+  }
 });
 
 export default router;
