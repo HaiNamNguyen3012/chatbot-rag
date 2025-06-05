@@ -6,12 +6,15 @@ import MessagingResponse from "twilio/lib/twiml/MessagingResponse";
 const router = Router();
 
 router.post("/", async (req: Request, res: Response) => {
+  
   try {
     const incomingMsg = req.body.Body?.trim();
     const from = req.body.From;
 
     console.log("📩 Tin nhắn từ:", from);
     console.log("📨 Nội dung:", incomingMsg);
+
+    console.log("📩 Nhận được request từ WhatsApp:", req.body);
 
     let reply = "Xin lỗi, tôi chưa có đủ thông tin để trả lời câu hỏi này.";
 
